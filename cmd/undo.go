@@ -1,11 +1,13 @@
 /*
 Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
 import (
 	"fmt"
+	"strconv"
+	"tt/enums"
+	"tt/utils"
 
 	"github.com/spf13/cobra"
 )
@@ -21,7 +23,24 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("undo called")
+		tasks := utils.ReadJsonFile()
+		for _, arg := range args {
+			val, err := strconv.Atoi(arg)
+			if err != nil {
+				fmt.Printf("Invalid task ID: %s\n", arg)
+				continue
+			}
+
+			if tasks[val-1].Status == enums.Done.ToString() {
+				tasks[val-1].Status = enums.ToDo.ToString()
+				fmt.Printf("Reverted task with ID %d to To-Do successfully!\n", val)
+				break
+			} else {
+				fmt.Printf("Task with ID %d is already in To-Do status.\n", val)
+			}
+
+		}
+		utils.OverwriteJsonFile(tasks)
 	},
 }
 

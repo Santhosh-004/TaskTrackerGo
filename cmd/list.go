@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	"tt/enums"
 	"tt/utils"
 
 	"github.com/spf13/cobra"
@@ -30,8 +31,11 @@ to quickly create a Cobra application.`,
 		}
 		fmt.Println("Your Tasks:")
 		for i := range tasks {
-			fmt.Printf("%d\t %s\t [%s]\t %s ago\n", tasks[i].Id, tasks[i].Task, tasks[i].Status,
-				strings.Split(time.Since(tasks[i].CreatedAt).Round(time.Minute).String(), "0s")[0])
+			if tasks[i].Status == enums.ToDo.ToString() {
+				fmt.Printf("%d\t %s\t [%s]\t %s ago\n", tasks[i].Id, tasks[i].Task, tasks[i].Status,
+					strings.Split(time.Since(tasks[i].CreatedAt).Round(time.Minute).String(), "0s")[0])
+			}
+
 		}
 
 	},

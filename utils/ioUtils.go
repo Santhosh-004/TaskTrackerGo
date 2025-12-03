@@ -29,6 +29,10 @@ func AddNewTask(task string) {
 func appendJsonFile(newTask structures.FormatStored) {
 	existingTasks := ReadJsonFile()
 	existingTasks = append(existingTasks, newTask)
-	jsonString, _ := json.Marshal(existingTasks)
+	OverwriteJsonFile(existingTasks)
+}
+
+func OverwriteJsonFile(tasks []structures.FormatStored) {
+	jsonString, _ := json.Marshal(tasks)
 	os.WriteFile(jsonFilePath, jsonString, os.ModePerm)
 }
